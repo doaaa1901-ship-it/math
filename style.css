@@ -1,0 +1,248 @@
+/* Global Reset & Fonts */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f6f6f6, #437c5b);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 2rem;
+}
+
+.container {
+  background: #b5d7b5;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(41, 2, 2, 0.417);
+  max-width: 600px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.container.home {
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #353638;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+select, button {
+  padding: 10px 16px;
+  margin: 1rem 0;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: #194236;
+  color: rgb(99, 110, 96);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #101b1a;
+}
+
+select {
+  background: #e0e0e0;
+  color: #565454;
+}
+
+.banner {
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.option-btn {
+  padding: 12px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  font-size: 1rem;
+  font-style: oblique;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: rgb(6, 6, 36);
+}
+
+.option-btn:hover {
+  border-color: #161717;
+  background: #e6f0ff;
+}
+
+#timer {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  background: #eaf0fb;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+#feedback {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+img#questionImg {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+/* Scoreboard Page Specific */
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.score-item {
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 5px solid #19202c;
+}
+
+footer {
+  margin-top: 1.5rem;
+}
+
+footer a {
+  text-decoration: none;
+  color: #04214c;
+  font-weight: bold;
+}
+#switch {
+  margin-bottom: 15px;
+}
+
+#switch a {
+  color: #e8ecf0;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+#switch a:hover {
+  color: #0044cc;
+  text-decoration: underline;
+}
+.banner {
+  width: 100%;
+  max-width: 150px; /* Limits the size on big screens */
+  height: auto;
+  border-radius: 10ch;
+  object-fit: cover;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 480px) {
+  .banner {
+    max-width: 250px; /* Smaller size on small phones */
+  }
+}
+#questionImg {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+#scoreDisplay {
+  font-size: 1.2em;
+  margin-top: 5px;
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade.show {
+  opacity: 1;
+}
+
+.log-out {
+  background-color: #192942;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.log-out:hover {
+  background-color: #2a3b5c;
+}
+.login-out{
+   background-color: #303133;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 13px;
+  font-size: 0.6rem;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.login-out:hover {
+  background-color: #2d2e32;
+}
+
+.skip-btn, .hint-btn {
+  margin: 10px 5px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

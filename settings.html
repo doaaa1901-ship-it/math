@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quizy Math | Settings</title>
+  <link rel="stylesheet" href="../mathproject waiting for new upd/style.css">
+  <style>
+    :root {
+      /* 🌙 Hermit Mode (Dark, Calm) */
+      --bg1: #1a1f1e;
+      --bg2: #2a3533;
+      --bg3: #394944;
+      --text: #e8ecef;
+      --muted: #b8c2bf;
+      --card-bg: rgba(255,255,255,0.06);
+      --panel-bg: rgba(30,40,39,0.75);
+      --accent: #6ad7a8;
+      --btn-bg: #2d3c37;
+      --btn-bg-hover: #3d4d48;
+      --link: #9ec3b1;
+      --link-hover: #b6dfc9;
+    }
+
+    body.light-mode {
+      --bg1: #f7f7f5;
+      --bg2: #e8e8e4;
+      --bg3: #dcdcd6;
+      --text: #2e2f2b;
+      --muted: #565c58;
+      --card-bg: rgba(255,255,255,0.8);
+      --panel-bg: rgba(255,255,255,0.75);
+      --accent: #5ba980;
+      --btn-bg: #e6ebe8;
+      --btn-bg-hover: #cfd8d3;
+      --link: #4b7563;
+      --link-hover: #375c4e;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background: linear-gradient(145deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 300% 300%;
+      animation: slowGradient 20s ease infinite;
+      overflow-x: hidden;
+      transition: all 0.6s ease;
+    }
+
+    @keyframes slowGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .overlay-blur {
+      position: absolute;
+      inset: 0;
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+
+    .settings-box {
+      position: relative;
+      z-index: 2;
+      background: var(--card-bg);
+      padding: 35px 30px;
+      border-radius: 16px;
+      max-width: 420px;
+      margin: 80px auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: background 0.6s ease, transform 0.3s ease;
+    }
+
+    .settings-box:hover {
+      transform: translateY(-3px);
+    }
+
+    .settings-box h2 {
+      margin-bottom: 20px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .settings-box img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .settings-box input[type="file"],
+    .settings-box input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background-color: var(--btn-bg);
+      color: var(--text);
+      font-size: 1rem;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .settings-box input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 6px rgba(106, 215, 168, 0.4);
+    }
+
+    .settings-box button {
+      display: block;
+      width: 100%;
+      padding: 12px 0;
+      margin-top: 10px;
+      background-color: var(--btn-bg);
+      color: var(--text);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .settings-box button:hover {
+      background-color: var(--btn-bg-hover);
+    }
+
+    .settings-box a {
+      text-decoration: none;
+      color: var(--link);
+      font-weight: 600;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    #customAlert {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--panel-bg);
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
+      z-index: 9999;
+      color: var(--text);
+      backdrop-filter: blur(10px);
+    }
+
+    #alertOkBtn {
+      margin-top: 14px;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--btn-bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    #alertOkBtn:hover {
+      background-color: var(--btn-bg-hover);
+    }
+
+    #alertOkBtn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 500px) {
+      .settings-box {
+        width: 90%;
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay-blur"></div>
+
+  <div class="settings-box">
+    <h2>👤 Profile Settings</h2>
+
+    <img id="preview" src="images/default-profile.png" alt="Preview" />
+
+    <input type="file" id="photoInput" accept="image/*" />
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+
+    <button class="log-out">
+      <a href="log.html">🔐 Log out / Switch Account</a>
+    </button>
+
+    <button onclick="saveSettings()">💾 Save Settings</button>
+
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </div>
+
+  <div id="customAlert">
+    <p id="alertMessage">Saved!</p>
+    <button id="alertOkBtn" disabled>OK</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedName = localStorage.getItem("username");
+      const savedPhoto = localStorage.getItem("profilePhoto");
+
+      if (savedName) document.getElementById("nameInput").value = savedName;
+      if (savedPhoto) document.getElementById("preview").src = savedPhoto;
+
+      document.getElementById("photoInput").addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("preview").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+
+    function saveSettings() {
+      const name = document.getElementById("nameInput").value || "Guest";
+      const photoSrc = document.getElementById("preview").src;
+
+      localStorage.setItem("username", name);
+      localStorage.setItem("profilePhoto", photoSrc);
+
+      showTimedAlert(`...loading,`, 1290, () => {
+        showTimedAlert(`✅ Saved! Thanks for your patience, ${name}`, 2340);
+      });
+    }
+
+    function showTimedAlert(message, delayMs, onClose) {
+      const alertBox = document.getElementById("customAlert");
+      const okBtn = document.getElementById("alertOkBtn");
+      document.getElementById("alertMessage").textContent = message;
+
+      alertBox.style.display = "block";
+      okBtn.disabled = true;
+
+      setTimeout(() => {
+        okBtn.disabled = false;
+      }, delayMs);
+
+      okBtn.onclick = () => {
+        alertBox.style.display = "none";
+        if (typeof onClose === "function") onClose();
+      };
+    }
+  </script>
+</body>
+</html>

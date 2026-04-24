@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizy Math | Scoreboard</title>
+
+  <link rel="stylesheet" href="../mathproject-waiting-for-new-upd/style.css" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* ===== PAGE BACKGROUND ===== */
+/* ===== GLOBAL ===== */
+body {
+  background: radial-gradient(circle at top, #243330, #1f2b28);
+  color: #e6f5ef;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* ===== MAIN CARD ===== */
+.container {
+  background: #2c3b37;
+  border-radius: 22px;
+  padding: 2rem;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.45),
+    inset 0 0 0 1px #3b4d48;
+}
+
+/* ===== HEADINGS ===== */
+h1, h2 {
+  color: #e6f5ef;
+  letter-spacing: 0.4px;
+}
+
+p {
+  color: #9fbab1;
+}
+
+/* ===== SELECTS ===== */
+select {
+  background: #243330;
+  color: #e6f5ef;
+  border-radius: 14px;
+  padding: 12px 16px;
+  border: 1px solid #3b4d48;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6fe3b8;
+}
+
+/* ===== BUTTONS ===== */
+button {
+  background: linear-gradient(135deg, #6fe3b8, #5ad0a6);
+  color: #0f1c18;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(111,227,184,0.35);
+}
+
+/* ===== SCORE ITEMS ===== */
+.score-item {
+  background: #243330;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-left: 5px solid #3b4d48;
+}
+
+/* Difficulty accents */
+.easy   { border-left-color: #63e6a8; }
+.medium { border-left-color: #f4c86c; }
+.hard   { border-left-color: #f07a7a; }
+
+/* ===== ACHIEVEMENTS ===== */
+.badge {
+  background: #243330;
+  color: #9fbab1;
+  border-radius: 14px;
+  padding: 14px;
+  opacity: 0.45;
+  border: 1px solid #3b4d48;
+}
+
+.badge.unlocked {
+  opacity: 1;
+  background: linear-gradient(135deg, #6fe3b8, #5ad0a6);
+  color: #0f1c18;
+  box-shadow: 0 0 20px rgba(111,227,184,0.4);
+}
+
+/* ===== CHART ===== */
+.chart-box {
+  background: #243330;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #3b4d48;
+}
+
+/* ===== FOOTER ===== */
+footer button {
+  background: #243330;
+  color: #e6f5ef;
+  border: 1px solid #3b4d48;
+}
+
+footer button:hover {
+  background: #2c3b37;
+}
+
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>📊 Your Scoreboard</h1>
+
+    <p id="latest">Latest score: —</p>
+
+    <!-- 🏆 ACHIEVEMENTS -->
+    <h2>🏆 Achievements</h2>
+    <div class="achievements">
+      <div class="badge" id="badge-first">🎯 First Try</div>
+      <div class="badge" id="badge-50">💪 Score 50+</div>
+      <div class="badge" id="badge-100">🔥 Perfect 100</div>
+      <div class="badge" id="badge-5">📚 5 Attempts</div>
+    </div>
+
+    <!-- 📈 CHART -->
+    <h2>📈 Progress</h2>
+    <div class="chart-box">
+      <canvas id="scoreChart"></canvas>
+    </div>
+
+    <!-- SCORE HISTORY -->
+    <div class="scoreboard" id="scoreHistory"></div>
+
+    <footer>
+      <button onclick="goHome()">🏠 Home</button>
+      <button onclick="clearScores()">🧹 Clear</button>
+    </footer>
+  </div>
+
+  <script>
+    /* ===== LOAD DATA ===== */
+    const latestScore = localStorage.getItem("latestScore");
+    document.getElementById("latest").textContent =
+      "Latest score: " + (latestScore ?? "None");
+
+    let history = [];
+    try {
+      history = JSON.parse(localStorage.getItem("history")) || [];
+    } catch {
+      history = [];
+    }
+
+    const list = document.getElementById("scoreHistory");
+
+    if (history.length === 0) {
+      list.innerHTML = "<p>No previous scores found.</p>";
+    } else {
+      [...history].reverse().forEach(entry => {
+        const div = document.createElement("div");
+        div.className = `score-item ${entry.difficulty}`;
+        div.innerHTML = `
+          <strong>${entry.score}</strong> — ${entry.difficulty.toUpperCase()}<br>
+          <small>${entry.date}</small>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    /* ===== 📈 CHART ===== */
+    if (history.length > 0) {
+      const scores = history.map(e => Number(e.score));
+      const labels = history.map((_, i) => i + 1);
+
+      new Chart(document.getElementById("scoreChart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Score",
+            data: scores,
+            fill: false,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    /* ===== 🏆 ACHIEVEMENTS LOGIC ===== */
+    if (history.length >= 1) unlock("badge-first");
+    if (history.some(e => e.score >= 50)) unlock("badge-50");
+    if (history.some(e => e.score >= 100)) unlock("badge-100");
+    if (history.length >= 5) unlock("badge-5");
+
+    function unlock(id) {
+      document.getElementById(id).classList.add("unlocked");
+    }
+
+    /* ===== FUNCTIONS ===== */
+    function clearScores() {
+      if (!confirm("Clear all scores?")) return;
+      localStorage.clear();
+      location.reload();
+    }
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

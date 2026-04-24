@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Math App - Login & Sign Up</title>
+  <link rel="stylesheet" href="styl.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <img src="Black White Simple Modern Neon Griddy Bold Technology Pixel Electronics Store Logo.png" alt="Math banner" class="banner"/>
+      <h2 id="formTitle">Login to MathAp1112p</h2>
+
+      <form id="loginForm">
+        <input name="email" type="email" placeholder="Email" required/>
+        <input name="password" type="password" placeholder="Password" required/>
+        <button type="submit">Login</button>
+        <p>Don't have an account? <a href="#" onclick="switchForm('signup')">Sign Up</a></p>
+      </form>
+
+      <form id="signupForm" style="display:none;">
+        <input name="name" type="text" placeholder="Full Name" required/>
+        <input name="email" type="email" placeholder="Email" required/>
+        <input name="password" type="password" placeholder="Password" required/>
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="#" onclick="switchForm('login')">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:5000/api";
+
+    function switchForm(form) {
+      document.getElementById("loginForm").style.display = form === "login" ? "block" : "none";
+      document.getElementById("signupForm").style.display = form === "signup" ? "block" : "none";
+      document.getElementById("formTitle").textContent = form === "login" ? "Login to MathApp" : "Sign Up for MathApp";
+    }
+    window.switchForm = switchForm;
+
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = this.querySelector('input[name="name"]').value;
+      const email = this.querySelector('input[name="email"]').value;
+      const password = this.querySelector('input[name="password"]').value;
+
+      try {
+        const res = await fetch(`${API_URL}/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        const inboxLink = email.includes("gmail")
+          ? "https://mail.google.com"
+          : email.includes("yahoo")
+            ? "https://mail.yahoo.com"
+            : "https://outlook.live.com";
+
+        Swal.fire({
+          title: "✅ Verification Email Sent!",
+          html: `
+            <p>We've sent a 6-digit code to <strong>${email}</strong>.</p>
+            <p>Click below to open your inbox.</p>
+            <a href="${inboxLink}" target="_blank"
+              style="display:inline-block;margin-top:10px;background:#4CAF50;color:#fff;
+              text-decoration:none;padding:10px 18px;border-radius:6px;font-weight:bold;">
+              Open Inbox
+            </a>
+          `,
+          icon: "success",
+          showConfirmButton: true,
+          confirmButtonText: "Enter Code"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const { value: code } = await Swal.fire({
+              title: "Enter Verification Code",
+              input: "text",
+              inputLabel: "6-digit code",
+              inputPlaceholder: "Enter code",
+              showCancelButton: true
+            });
+            if (code) {
+              const verifyRes = await fetch(`${API_URL}/verify`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, code })
+              });
+              const verifyData = await verifyRes.json();
+              if (!verifyRes.ok) throw new Error(verifyData.error);
+              Swal.fire("🎉 Verified!", "You can now login.", "success");
+              switchForm("login");
+            }
+          }
+        });
+
+      } catch (err) {
+        Swal.fire("❌ Error", err.message, "error");
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const email = this.querySelector('input[name="email"]').value;
+      const password = this.querySelector('input[name="password"]').value;
+
+      try {
+        const res = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        Swal.fire({
+          icon: "success",
+          title: `👋 Welcome ${data.user.name}!`,
+          confirmButtonText: "Continue"
+        }).then(() => window.location.href = "index.html");
+
+      } catch (err) {
+        Swal.fire("❌ Error", err.message, "error");
+      }
+    });
+  </script>
+</body>
+</html>
