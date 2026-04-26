@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
@@ -14,6 +12,8 @@ const users = {};
 const verificationCodes = {}; 
 
 // ✅ Gmail transporter with App Password
+require("dotenv").config();
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
