@@ -57,10 +57,9 @@ async function sendWelcomeEmail(to, name, code = null) {
 }
 
 // ✅ Routes
-app.get("/api/test", (req, res) => {
-  res.json({ ok: true, message: "API is working" });
+app.get("/", (req, res) => {
+  res.send("🚀 MathApp backend is running!");
 });
-
 
 app.post("/api/signup", async (req, res) => {
   const { name, email, password } = req.body;
