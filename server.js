@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
@@ -15,10 +17,11 @@ const verificationCodes = {};
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "amrelmasry842@gmail.com",
-    pass: "hthy ucwn yphf uhcd" // ⚠️ Use your Gmail App Password
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
   }
 });
+
 
 // ✅ Generate 6-digit verification code
 function generateVerificationCode() {
